@@ -1,12 +1,12 @@
 %global _empty_manifest_terminate_build 0
 Name:           python-lz4
 Version:        3.1.3
-Release:        1
+Release:        2
 Summary:        LZ4 Bindings for Python
 License:        BSD and Zlib
 URL:            https://github.com/python-lz4/python-lz4
 Source0:        https://files.pythonhosted.org/packages/d9/c5/080234f5b6b698f56339edf7715d9256eca4eb3d35b36893227c399e69f9/lz4-3.1.3.tar.gz
-#BuildArch:      noarch
+
 %description
 LZ4 Bindings for Python
 
@@ -48,7 +48,7 @@ Provides:       python3-lz4-doc
 LZ4 Bindings for Python
 
 %prep
-%autosetup -n lz4-3.1.3
+%autosetup -n lz4-%{version}
 
 %build
 %py3_build
@@ -86,12 +86,14 @@ mv %{buildroot}/doclist.lst .
 %{__python3} setup.py test
 
 %files -n python3-lz4 -f filelist.lst
-%dir /usr/lib64/python3.8/site-packages/*
-
+%dir %{python3_sitearch}/*
 
 %files help -f doclist.lst
 %{_docdir}/*
 
 %changelog
+* Fri Dec 03 2021 huangtianhua <huangtianhua@huawei.com> - 3.1.3-2
+- Correct files include dir of python3_sitearch macro
+
 * Thu Aug 19 2021 OpenStack_SIG <openstack@openeuler.org> - 3.1.3-1
 - Package Spec generate
