@@ -1,12 +1,11 @@
 %global _empty_manifest_terminate_build 0
 Name:           python-lz4
-Version:        3.1.3
-Release:        2
+Version:        4.0.0
+Release:        1
 Summary:        LZ4 Bindings for Python
 License:        BSD and Zlib
 URL:            https://github.com/python-lz4/python-lz4
-Source0:        https://files.pythonhosted.org/packages/d9/c5/080234f5b6b698f56339edf7715d9256eca4eb3d35b36893227c399e69f9/lz4-3.1.3.tar.gz
-
+Source0:        https://files.pythonhosted.org/packages/b1/e1/4527cb8ae9f087787b5014aec19645fe96b3056785fd7c0af3b944b6c55d/lz4-4.0.0.tar.gz
 %description
 LZ4 Bindings for Python
 
@@ -19,6 +18,9 @@ BuildRequires:  python3-setuptools
 BuildRequires:  python3-pbr
 BuildRequires:  python3-pip
 BuildRequires:  python3-wheel
+BuildRequires:  python3-cffi
+BuildRequires:  gcc
+BuildRequires:  gdb
 # General requires
 BuildRequires:  python3-sphinx
 BuildRequires:  python3-sphinx-bootstrap-theme
@@ -53,9 +55,9 @@ LZ4 Bindings for Python
 %build
 %py3_build
 
-
 %install
 %py3_install
+
 install -d -m755 %{buildroot}/%{_pkgdocdir}
 if [ -d doc ]; then cp -arf doc %{buildroot}/%{_pkgdocdir}; fi
 if [ -d docs ]; then cp -arf docs %{buildroot}/%{_pkgdocdir}; fi
@@ -83,7 +85,7 @@ mv %{buildroot}/filelist.lst .
 mv %{buildroot}/doclist.lst .
 
 %check
-%{__python3} setup.py test
+%{__python3} -m pytest --cov=lz4/block --cov=lz4/frame tests/block tests/frame
 
 %files -n python3-lz4 -f filelist.lst
 %dir %{python3_sitearch}/*
@@ -92,6 +94,9 @@ mv %{buildroot}/doclist.lst .
 %{_docdir}/*
 
 %changelog
+* Tue May 17 2022 OpenStack_SIG <openstack@openeuler.org> - 4.0.0-1
+- Init package python3-lz4 of version 4.0.0
+
 * Fri Dec 03 2021 huangtianhua <huangtianhua@huawei.com> - 3.1.3-2
 - Correct files include dir of python3_sitearch macro
 
